@@ -22,7 +22,7 @@ vector<int>::iterator endofs(vector<int> &input, vector<int>::iterator startofse
 
 int main()
 {
-	vector<int> input = { 1,3,5,10,6,5 };%
+	vector<int> input = { 1,3,5,10,6,5 };
 	auto first = endofs(input, input.begin());
 	cout << *first << endl;
 	auto second = endofs(input, first);
