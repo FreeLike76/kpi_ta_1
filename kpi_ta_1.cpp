@@ -1,38 +1,68 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <fstream>
+#define FILESIZE 250000000
+
 using namespace std;
 
-vector<int>::iterator endofchunk(vector<int> &input, vector<int>::iterator startofsection)
+vector<int> read(string path)
 {
-	auto last = startofsection;
-	for (auto it = startofsection; it != input.end(); ++it)
+	ifstream A;
+	A.open(path + ".txt");
+	vector<int> flow;
+	flow.reserve(FILESIZE);
+	int a;
+	if(!A.is_open())
 	{
-		if (*it >= *last)
+		cout << "ERORR!";
+	}
+	while (!A.eof())
+	{
+		A >> a;
+		flow.push_back(a);
+	}
+	A.close();
+	return flow;
+}
+
+void write_to(string path, vector<int>& flow)
+{
+	ofstream a1, a2;
+	a1.open(path + "temp1.txt", fstream::app);
+	a2.open(path + "temp2.txt", fstream::app);
+	bool firstfile = true;
+	int last = *flow.begin();
+	for (auto& curnum : flow)
+	{
+		if (curnum < last)
 		{
-			last = it;
+			if (firstfile)
+				a1 << '\n';
+			else
+				a2 << '\n';
+			firstfile = !firstfile;
+		}
+		if (firstfile)
+		{
+			a1 << curnum << ' ';
 		}
 		else
 		{
-			return it;
+			a2 << curnum << ' ';
 		}
+		last = curnum;
 	}
-	return input.end();
+	flow.clear();
+	a1.close();
+	a2.close();
 }
 
-void naturediv(vector<int> &input, vector<int> &a, vector<int> &b)
-{
-	a.clear();
-	b.clear();
-	vector<int>::iterator endofs;
-	for(auto ptr = input.begin();ptr!=input.end();++ptr)
-	{
-		
-	}
-}
+
 
 int main()
 {
-	vector<int> input = { 1,3,5,10,6,5 };
+	string path = "input_file";
+	auto flow = read(path);
+	write_to(path, flow);
 	
 }
